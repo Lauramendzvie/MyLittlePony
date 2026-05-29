@@ -25,7 +25,7 @@ export default function QuizScreen({ guardianName, question, options, onAnswer, 
         </div>
 
         <button onClick={onBack} className="btn-secondary-warm" style={{ border: 'none', background: 'transparent', fontSize: '16px' }}>
-          ❌ Deixar para depois
+          Quero fazer depois
         </button>
       </div>
     </div>

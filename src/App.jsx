@@ -19,7 +19,14 @@ export default function App() {
 
   const [inventoryOrder, setInventoryOrder] = useState(() => {
     const saved = localStorage.getItem('mlp_inventory_order');
-    return saved ? JSON.parse(saved) : treasuresData.map(t => t.id);
+    if (saved) return JSON.parse(saved);
+
+    const shuffledIds = treasuresData.map(t => t.id);
+    for (let i = shuffledIds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledIds[i], shuffledIds[j]] = [shuffledIds[j], shuffledIds[i]];
+    }
+    return shuffledIds;
   });
 
   useEffect(() => {
@@ -41,24 +48,51 @@ export default function App() {
     localStorage.setItem('mlp_inventory_order', JSON.stringify(inventoryOrder));
   }, [inventoryOrder]);
 
+  const handleResetGame = () => {
+    if (window.confirm("Você quer mesmo reiniciar o jogo do zero e embaralhar tudo de novo? 🌟")) {
+      localStorage.clear();
+      
+      const resetTreasures = treasuresData.map(t => ({ ...t, status: 'locked' }));
+      const resetOrder = treasuresData.map(t => t.id);
+      
+      for (let i = resetOrder.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [resetOrder[i], resetOrder[j]] = [resetOrder[j], resetOrder[i]];
+      }
+
+      setTreasures(resetTreasures);
+      setInventoryOrder(resetOrder);
+      setCurrentScreen('welcome');
+    }
+  };
+
   const handleAnswerQuiz = (selectedOptionIndex) => {
     const isCorrect = selectedOptionIndex === activeTreasure.quiz.correctAnswerIndex;
+    
     setTreasures(prev => prev.map(t => {
       if (t.id === activeTreasure.id) {
         return { ...t, status: isCorrect ? 'complete' : 'incomplete' };
       }
       return t;
     }));
-    setCurrentScreen('inventory');
+
+    if (isCorrect) {
+      setCurrentScreen('inventory');
+    } else {
+      alert("Resposta incorreta! Tente falar com a guardiã no mapa novamente. 🌟");
+      setCurrentScreen('map');
+    }
+    
     setActiveTreasure(null);
   };
 
   const handleValidateEnigma = (textInput) => {
-    const cleanInput = textInput.trim().toUpperCase();
-    if (cleanInput === "AMIZADE É MÁGICA" || cleanInput === "AMIZADE E MAGICA") {
+    const cleanInput = textInput.trim().toUpperCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    if (cleanInput === "PONEIS DO PONAI SAO PONEIS DE TI") {
       setCurrentScreen('victory');
     } else {
-      alert("Oops! A palavra secreta não está certa. Vamos tentar de novo!");
+      alert("A frase secreta está errada heinn, verifique a ordem na mochila e tente novamente!");
     }
   };
 
@@ -66,7 +100,7 @@ export default function App() {
 
   return (
     <div className={`app-container ${showBottomNav ? 'with-bottom-nav' : ''}`}>
-      {!isOnline && <div className="offline-banner">⚠️ Estás a jogar sem internet. O teu jogo está guardado!</div>}
+      {!isOnline && <div className="offline-banner">Sua internet foi de base, mas seu joguinho tá guardado!</div>}
 
       {currentScreen === 'welcome' && (
         <WelcomeScreen onStart={() => setCurrentScreen('map')} />
@@ -79,6 +113,7 @@ export default function App() {
             setActiveTreasure(treasure);
             setCurrentScreen('quiz');
           }} 
+          onResetGame={handleResetGame} // Passando a ação pro botão do mapa
         />
       )}
       
@@ -99,7 +134,14 @@ export default function App() {
         <InventoryScreen 
           clues={inventoryOrder.map(id => treasures.find(t => t.id === id))}
           onUpdateOrder={setInventoryOrder}
-          onCheckEnigma={() => setCurrentScreen('enigma')}
+          onCheckEnigma={() => {
+            const todosCompletos = treasures.every(t => t.status === 'complete');
+            if (todosCompletos) {
+              setCurrentScreen('enigma');
+            } else {
+              alert("Você precisa coletar e acertar todas as pistas mágicas no mapa antes de tentar decifrar o enigma! 🌟");
+            }
+          }}
         />
       )}
       
@@ -113,8 +155,16 @@ export default function App() {
       {currentScreen === 'victory' && (
         <VictoryScreen onRestart={() => {
           localStorage.clear();
-          setTreasures(treasuresData.map(t => ({ ...t, status: 'locked' })));
-          setInventoryOrder(treasuresData.map(t => t.id));
+          
+          const resetTreasures = treasuresData.map(t => ({ ...t, status: 'locked' }));
+          const resetOrder = treasuresData.map(t => t.id);
+          for (let i = resetOrder.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [resetOrder[i], resetOrder[j]] = [resetOrder[j], resetOrder[i]];
+          }
+
+          setTreasures(resetTreasures);
+          setInventoryOrder(resetOrder);
           setCurrentScreen('welcome');
         }} />
       )}

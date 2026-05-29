@@ -9,7 +9,7 @@ export default function EnigmaScreen({ onValidate, onBack }) {
         <p style={{ fontSize: '60px', marginBottom: '16px' }}>🏰</p>
         <h2 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '16px' }}>O Grande Segredo</h2>
         <p style={{ fontSize: '18px', color: 'var(--text-soft)', marginBottom: '32px', lineHeight: '1.5' }}>
-          Junta as palavras da tua mochila e escreve a frase mágica aqui!
+          Junta as palavrinhas da mochila e monta a frase que vai salvar o PONAI
         </p>
         
         <input
@@ -23,10 +23,10 @@ export default function EnigmaScreen({ onValidate, onBack }) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <button onClick={() => onValidate(input)} className="btn-primary-warm">
-            Verificar Magia ✨
+            Verificar a magica 
           </button>
           <button onClick={onBack} className="btn-secondary-warm">
-            Voltar à Mochila
+            Voltar pra sua mochilinha
           </button>
         </div>
       </div>
