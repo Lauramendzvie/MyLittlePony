@@ -1,16 +1,33 @@
-# React + Vite
+🗺️ PonAI - O Enigma de Equestria
+Um jogo interativo desenvolvido em React que mistura o universo de My Little Pony com desafios de Tecnologia da Informação. O objetivo é responder aos quizzes das 7 guardiãs, coletar as palavras na mochila e ordená-las para decifrar a frase mágica final.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+✨ Funcionalidades
+Mapa Interativo: 7 pôneis guardiãs distribuídas com visual personalizado.
 
-Currently, two official plugins are available:
+Quizzes de TI: Perguntas sobre HTML5, React (Virtual DOM), CSS Modules, PWAs e Estruturas de Dados.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Mochila (Drag and Drop): Sistema para arrastar e ordenar as palavras coletadas.
 
-## React Compiler
+Save Automático: Progresso salvo no localStorage do navegador.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Suporte Offline: O jogo continua funcionando mesmo sem internet.
 
-## Expanding the ESLint configuration
+Botão de Reset: Reinicia o jogo, limpa o cache e re-embaralha as pistas.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🛠️ Como Rodar o Projeto
+Bash
+# 1. Clone o repositório
+git clone https://github.com/seu-usuario/seu-repositorio.git
+
+# 2. Entre na pasta
+cd seu-repositorio
+
+# 3. Instale as dependências
+npm install
+
+# 4. Rode o projeto
+npm run dev
+🔐 O Enigma Final
+A frase correta para vencer o jogo (após ordenar as pistas na mochila) é:
+
+"PONEIS DO PONAI SAO PONEIS DE TI"
